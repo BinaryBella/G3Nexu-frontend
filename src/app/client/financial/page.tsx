@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import {Search,  FileSearch} from 'lucide-react';
+import {Search, FileSearch, Edit, Trash} from 'lucide-react';
 import Link from "next/link"; // Import Eye icon
 
 // Sample financial details data
@@ -28,7 +28,7 @@ const FinancialDetailsTable = () => {
                 <div className="relative">
                     <input
                         type="text"
-                        placeholder="Search by project name"
+                        placeholder="Search text"
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
                         className="pl-8 pr-2 py-1 border rounded"
@@ -36,8 +36,8 @@ const FinancialDetailsTable = () => {
                     <Search className="absolute left-2 top-2 h-4 w-4 text-gray-400" />
                 </div>
                 <Link href="/client/financial/add-invoice">
-                    <button className="bg-[#3450A3] text-white px-4 py-2 rounded-lg font-bold hover:bg-[#3450A3]">
-                        Add New Financial Details
+                    <button className="bg-[#3450A3] text-white px-4 py-2 rounded-lg hover:bg-[#3450A3]">
+                        ADD NEW FINANCIAL DETAILS
                     </button>
                 </Link>
             </div>
@@ -59,12 +59,24 @@ const FinancialDetailsTable = () => {
                         <td className="p-2">{detail.type}</td>
                         <td className="p-2">{detail.dateTime}</td>
                         <td className="p-2">
-                            <td className="p-2">
+                            <td className="p-3 flex space-x-4">
                                 <button
-                                    className="flex items-center justify-center p-1 hover:bg-gray-100 rounded"
-                                    title="Search Details"
+                                    className="p-1 hover:bg-gray-100 rounded"
+                                    title="More Details"
                                 >
-                                    <FileSearch className="h-6 w-6"/>
+                                    <FileSearch className="h-5 w-5 text-[#3450A3]"/>
+                                </button>
+                                <button
+                                    className="p-1 hover:bg-gray-100 rounded"
+                                    title="Edit"
+                                >
+                                    <Edit className="h-5 w-5 text-[#3450A3]"/>
+                                </button>
+                                <button
+                                    className="p-1 hover:bg-gray-100 rounded"
+                                    title="Delete"
+                                >
+                                    <Trash className="h-5 w-5 text-red-600"/>
                                 </button>
                             </td>
 
