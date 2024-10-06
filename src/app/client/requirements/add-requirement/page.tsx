@@ -76,18 +76,18 @@ const RequirementForm = () => {
                     onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
                 />
             </div>
-            <div className=" w-3/6 flex items-center justify-between mt-16">
+            <div className="w-3/6 flex justify-end mt-16 gap-x-6">
                 <button
-                    className="w-28 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="w-28 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
                     type="button"
                 >
-                    CANCEL
+                    Cancel
                 </button>
                 <button
-                    className="w-28 bg-[#FFBF00] hover:bg-[#FFBF00] text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="w-28 bg-[#FFBF00] hover:bg-[#FFBF00] text-black font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
                     type="submit"
                 >
-                    ADD
+                    Save
                 </button>
             </div>
             {/* Illustration */}

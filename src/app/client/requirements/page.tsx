@@ -1,7 +1,7 @@
 "use client";
 
 import React, {useState} from 'react';
-import {FileSearch, Search, Settings} from 'lucide-react';
+import {Edit, FileSearch, Search, Settings, Trash} from 'lucide-react';
 import Link from "next/link";
 
 const requirements = [
@@ -71,8 +71,8 @@ const Table = () => {
                     <Search className="absolute left-2 top-2 h-4 w-4 border rounded-lg text-gray-400"/>
                 </div>
                 <Link href="/client/requirements/add-requirement">
-                    <button className="bg-[#3450A3] text-white px-4 py-2 rounded-lg font-bold hover:bg-[#3450A3]">
-                        Add New Requirement
+                    <button className="bg-[#3450A3] text-white px-4 py-2 rounded-lg hover:bg-[#3450A3]">
+                        ADD NEW REQUIREMENT
                     </button>
                 </Link>
             </div>
@@ -93,12 +93,12 @@ const Table = () => {
                                 <PriorityBadge priority={req.priority}/>
                             </td>
                             <td className="p-2">{req.description}</td>
-                            <td className="p-2">
+                            <td className="p-3 flex space-x-4">
                                 <button
-                                    className="flex items-center justify-center p-1 hover:bg-gray-100 rounded"
-                                    title="Search Details"
+                                    className="p-1 hover:bg-gray-100 rounded"
+                                    title="More Details"
                                 >
-                                    <FileSearch className="h-6 w-6"/>
+                                    <FileSearch className="h-5 w-5 text-[#3450A3]"/>
                                 </button>
                             </td>
                         </tr>
@@ -108,10 +108,10 @@ const Table = () => {
             <div className="flex justify-end mt-4 gap-1">
                 {[1, 2, 3, 4, 5, 6, 7].map((page) => (
                     <button key={page} className="px-3 py-1 border rounded hover:bg-gray-100">
-                    {page}
-                        </button>
-                    ))}
-                </div>
+                        {page}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 };
