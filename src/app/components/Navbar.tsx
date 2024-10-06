@@ -5,7 +5,7 @@ import { User } from 'lucide-react';
 
 const Navbar = () => {
     return (
-        <nav className="flex justify-between items-center p-5 px-10 bg-white shadow-md fixed top-0 left-0 right-0 z-10 h-16">
+        <nav className="flex justify-between items-center p-5 px-10 bg-white shadow-sm fixed top-0 left-0 right-0 z-10 h-16">
             {/* Logo Section */}
             <Link href="/client/projects" className="flex items-center">
                 <Image src="/images/logo.png" alt="Logo" width={150} height={40} />
@@ -13,10 +13,12 @@ const Navbar = () => {
 
             {/* User and Logout Section */}
             <div className="flex items-center space-x-4">
-                {/* User Icon */}
-                <button className="text-blue-500">
+                <Link
+                    href="/profile"
+                    className="text-blue-500 hover:text-blue-700 transition-colors"
+                >
                     <User className="w-6 h-6 mr-2" />
-                </button>
+                </Link>
 
                 {/* Logout Button */}
                 <button

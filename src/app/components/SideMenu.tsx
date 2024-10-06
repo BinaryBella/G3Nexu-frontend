@@ -14,7 +14,7 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
     { title: 'Projects', path: '/client/projects', icon: FolderOpen },
     { title: 'Requirements', path: '/client/requirements', icon: FileText },
-    { title: 'Bug Reports', path: '/client/bug-reports', icon: Bug },
+    { title: 'Bug Reports', path: '/client/bugs', icon: Bug },
     { title: 'Financial Details', path: '/client/financial', icon: DollarSign },
     { title: 'Settings', path: '/client/settings', icon: Settings },
 ];
