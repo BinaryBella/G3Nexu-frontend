@@ -302,7 +302,7 @@ export default function ProjectForm({ projectId }: ProjectFormProps) {
                                         type="checkbox"
                                         name="status"
                                         checked={formData.status}
-                                        onChange={(e) => setFormData((prev) => ({ ...prev, status: e.target.checked }))}
+                                        onChange={(e) => setFormData((prev) => ({...prev, status: e.target.checked}))}
                                         className="form-checkbox h-5 w-5 text-blue-600"
                                     />
                                     <span className="text-sm font-medium text-gray-700">Status</span>
@@ -312,19 +312,18 @@ export default function ProjectForm({ projectId }: ProjectFormProps) {
                     )}
 
                     {/* Form Actions */}
-                    <div className="flex justify-end space-x-4 pt-4">
+                    <div className="w-3/6 flex justify-end mt-16 gap-x-6">
                         <button
+                            className="w-28 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
                             type="button"
-                            onClick={() => router.back()}
-                            className="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
                         >
-                            CANCEL
+                            Cancel
                         </button>
                         <button
+                            className="w-28 bg-[#FFBF00] hover:bg-[#FFBF00] text-black font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
                             type="submit"
-                            className="px-6 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition-colors"
                         >
-                            {activeTab === 'initialization' ? 'NEXT' : 'SUBMIT'}
+                            Save
                         </button>
                     </div>
 
