@@ -1,9 +1,8 @@
-// src/app/components/SideMenu.tsx
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FileText, Bug, DollarSign, FolderOpen, Settings } from 'lucide-react';
+import { User, Users, FileText, Bug, DollarSign, FolderOpen, Settings, ClipboardList, File } from 'lucide-react'; // Add icons here
 
 interface MenuItem {
     title: string;
@@ -11,11 +10,16 @@ interface MenuItem {
     icon: React.ElementType;
 }
 
+// Expanded menu items based on the image
 const menuItems: MenuItem[] = [
+    { title: 'Clients', path: '/company/clients', icon: User },
+    { title: 'Employees', path: '/company/employees', icon: Users },
     { title: 'Projects', path: '/client/projects', icon: FolderOpen },
     { title: 'Requirements', path: '/client/requirements', icon: FileText },
     { title: 'Bug Reports', path: '/client/bugs', icon: Bug },
-    { title: 'Financial Details', path: '/client/financial', icon: DollarSign },
+    { title: 'Financial Details', path: '/client/financial', icon: ClipboardList },
+    { title: 'Payments', path: '/company/payments', icon: DollarSign },
+    { title: 'Terms & Conditions', path: '/company/terms', icon: File },
 ];
 
 const SideMenu = () => {
