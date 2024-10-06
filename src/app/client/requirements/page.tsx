@@ -1,7 +1,8 @@
 "use client";
 
 import React, {useState} from 'react';
-import {Search, Settings} from 'lucide-react';
+import {FileSearch, Search, Settings} from 'lucide-react';
+import Link from "next/link";
 
 const requirements = [
     {
@@ -69,9 +70,11 @@ const Table = () => {
                     />
                     <Search className="absolute left-2 top-2 h-4 w-4 border rounded-lg text-gray-400"/>
                 </div>
-                <button className="bg-[#3450A3] text-white px-4 py-2 rounded-lg font-bold hover:bg-[#3450A3]">
-                    Add New Requirement
-                </button>
+                <Link href="/client/requirements/add-requirement">
+                    <button className="bg-[#3450A3] text-white px-4 py-2 rounded-lg font-bold hover:bg-[#3450A3]">
+                        Add New Requirement
+                    </button>
+                </Link>
             </div>
                 <table className="w-full border-collapse rounded-lg overflow-hidden">
                     <thead>
@@ -91,18 +94,21 @@ const Table = () => {
                             </td>
                             <td className="p-2">{req.description}</td>
                             <td className="p-2">
-                                <button className="p-1 hover:bg-gray-100 rounded">
-                                    <Settings className="h-4 w-4"/>
+                                <button
+                                    className="flex items-center justify-center p-1 hover:bg-gray-100 rounded"
+                                    title="Search Details"
+                                >
+                                    <FileSearch className="h-6 w-6"/>
                                 </button>
                             </td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
-                <div className="flex justify-end mt-4 gap-1">
-                    {[1, 2, 3, 4, 5, 6, 7].map((page) => (
-                        <button key={page} className="px-3 py-1 border rounded hover:bg-gray-100">
-                            {page}
+            <div className="flex justify-end mt-4 gap-1">
+                {[1, 2, 3, 4, 5, 6, 7].map((page) => (
+                    <button key={page} className="px-3 py-1 border rounded hover:bg-gray-100">
+                    {page}
                         </button>
                     ))}
                 </div>

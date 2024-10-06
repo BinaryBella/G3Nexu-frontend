@@ -16,7 +16,6 @@ const menuItems: MenuItem[] = [
     { title: 'Requirements', path: '/client/requirements', icon: FileText },
     { title: 'Bug Reports', path: '/client/bugs', icon: Bug },
     { title: 'Financial Details', path: '/client/financial', icon: DollarSign },
-    { title: 'Settings', path: '/client/settings', icon: Settings },
 ];
 
 const SideMenu = () => {
@@ -24,7 +23,7 @@ const SideMenu = () => {
 
     return (
         <aside className="w-64 bg-white border-r border-gray-200 fixed left-0 top-16 bottom-0">
-            <div className="overflow-y-auto h-full py-4">
+            <div className="overflow-y-auto h-full py-6">
                 <nav className="mt-4">
                     {menuItems.map((item) => {
                         const Icon = item.icon;
