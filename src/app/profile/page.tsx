@@ -2,8 +2,8 @@
 
 import React, { useState, useRef, useEffect, ChangeEvent } from 'react';
 import Image from 'next/image';
-import { Camera, Save } from 'lucide-react';
-import {router} from "next/client";
+import { Camera } from 'lucide-react';
+import { useRouter } from 'next/navigation'; // Fixed router import
 
 interface UserProfile {
     name: string;
@@ -26,7 +26,16 @@ interface ProfileFormData {
 }
 
 export default function ProfilePage() {
-    const [formData, setFormData] = useState<ProfileFormData | null>(null);
+    const router = useRouter();
+    const [formData, setFormData] = useState<ProfileFormData>({
+        name: '',
+        contactNo: '',
+        emailAddress: '',
+        address: '',
+        image: '',
+        newPassword: '',
+        confirmPassword: ''
+    });
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
@@ -42,10 +51,12 @@ export default function ProfilePage() {
                     contactNo: '+1234567890',
                     emailAddress: 'john@example.com',
                     address: '123 Main St',
-                    image: null,
+                    image: '',
+                    newPassword: '',
+                    confirmPassword: ''
                 };
                 setFormData(mockProfile);
-                setPreviewImage(mockProfile.image);
+                setPreviewImage(mockProfile.image || null);
             } catch (error) {
                 setError('Failed to load profile data');
                 console.error('Error fetching profile:', error);
@@ -58,13 +69,11 @@ export default function ProfilePage() {
     }, []);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (!formData) return;
-
         const { name, value } = e.target;
-        setFormData((prev) => prev ? ({
+        setFormData((prev) => ({
             ...prev,
             [name]: value,
-        }) : null);
+        }));
     };
 
     const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -72,19 +81,19 @@ export default function ProfilePage() {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setPreviewImage(reader.result as string);
-                setFormData((prev) => prev ? ({
+                const result = reader.result as string;
+                setPreviewImage(result);
+                setFormData((prev) => ({
                     ...prev,
-                    image: reader.result as string,
-                }) : null);
+                    image: result,
+                }));
             };
             reader.readAsDataURL(file);
         }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!formData) return;
 
         try {
             setIsSaving(true);
@@ -114,29 +123,11 @@ export default function ProfilePage() {
     };
 
     const handleCancel = () => {
-        // You can customize this to go back to a specific page
         router.back();
     };
 
-    if (isLoading) {
-        return (
-            <div className="flex justify-center items-center min-h-screen">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3450A3]" />
-            </div>
-        );
-    }
-
-    if (!formData) {
-        return (
-            <div className="flex justify-center items-center min-h-screen">
-                <p className="text-red-500">Error loading profile</p>
-            </div>
-        );
-    }
-
     return (
         <div className="p-4">
-            {/* Header section matching your table component */}
             <h1 className="text-4xl font-bold text-[#3450A3] mb-8">
                 Profile Settings
             </h1>
@@ -148,138 +139,141 @@ export default function ProfilePage() {
             )}
 
             <div className="bg-white">
-                <form onSubmit={handleSubmit} className="p-6">
-                    {/* Profile Image Upload */}
-                    <div className="flex flex-col items-center space-y-4 mb-8">
-                        <div className="relative">
-                            <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100">
-                                {previewImage ? (
-                                    <Image
-                                        src={previewImage}
-                                        alt="Profile"
-                                        width={128}
-                                        height={128}
-                                        className="object-cover w-full h-full"
-                                    />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                                        <Camera className="w-8 h-8 text-gray-400"/>
-                                    </div>
-                                )}
+                <form onSubmit={handleSubmit} className="p-6 w-4/6">
+                    <div className="flex flex-row gap-8">
+                        {/* Left side - Profile Image */}
+                        <div className="flex items-start pt-4">
+                            <div className="relative">
+                                <div className="w-32 h-32 ml-16 rounded-full overflow-hidden bg-gray-100">
+                                    {previewImage ? (
+                                        <Image
+                                            src={previewImage}
+                                            alt="Profile"
+                                            width={192}
+                                            height={192}
+                                            className="object-cover w-full h-full"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                                            <Camera className="w-12 h-12 text-gray-400"/>
+                                        </div>
+                                    )}
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="absolute bottom-0 right-0 bg-[#3450A3] p-2 rounded-full text-white hover:bg-[#2a4086] transition-colors"
+                                >
+                                    <Camera className="w-4 h-4"/>
+                                </button>
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    onChange={handleImageUpload}
+                                    accept="image/*"
+                                    className="hidden"
+                                />
                             </div>
-                            <button
-                                type="button"
-                                onClick={() => fileInputRef.current?.click()}
-                                className="absolute bottom-0 right-0 bg-[#3450A3] p-2 rounded-full text-white hover:bg-[#2a4086] transition-colors"
-                            >
-                                <Camera className="w-4 h-4"/>
-                            </button>
-                            <input
-                                type="file"
-                                ref={fileInputRef}
-                                onChange={handleImageUpload}
-                                accept="image/*"
-                                className="hidden"
-                            />
+                        </div>
+
+                        {/* Right side - Form Fields */}
+                        <div className="flex-1">
+                            <div className="space-y-4 w-3/4 ml-20">
+                                <div>
+                                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleInputChange}
+                                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="contactNo" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Contact Number
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        id="contactNo"
+                                        name="contactNo"
+                                        value={formData.contactNo}
+                                        onChange={handleInputChange}
+                                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Email Address
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="emailAddress"
+                                        name="emailAddress"
+                                        value={formData.emailAddress}
+                                        onChange={handleInputChange}
+                                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Address
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="address"
+                                        name="address"
+                                        value={formData.address}
+                                        onChange={handleInputChange}
+                                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                                        New Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        id="newPassword"
+                                        name="newPassword"
+                                        value={formData.newPassword || ''}
+                                        onChange={handleInputChange}
+                                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
+                                        minLength={8}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Confirm Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        value={formData.confirmPassword || ''}
+                                        onChange={handleInputChange}
+                                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
+                                        minLength={8}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Form Fields */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                                Name
-                            </label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleInputChange}
-                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="contactNo" className="block text-sm font-medium text-gray-700 mb-1">
-                                Contact Number
-                            </label>
-                            <input
-                                type="tel"
-                                id="contactNo"
-                                name="contactNo"
-                                value={formData.contactNo}
-                                onChange={handleInputChange}
-                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700 mb-1">
-                                Email Address
-                            </label>
-                            <input
-                                type="email"
-                                id="emailAddress"
-                                name="emailAddress"
-                                value={formData.emailAddress}
-                                onChange={handleInputChange}
-                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
-                                Address
-                            </label>
-                            <input
-                                type="text"
-                                id="address"
-                                name="address"
-                                value={formData.address}
-                                onChange={handleInputChange}
-                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                                New Password
-                            </label>
-                            <input
-                                type="password"
-                                id="newPassword"
-                                name="newPassword"
-                                value={formData.newPassword || ''}
-                                onChange={handleInputChange}
-                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
-                                minLength={8}
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                                Confirm Password
-                            </label>
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                value={formData.confirmPassword || ''}
-                                onChange={handleInputChange}
-                                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3450A3] focus:border-transparent"
-                                minLength={8}
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex justify-end mt-16 gap-x-6">
+                    {/* Bottom Buttons */}
+                    <div className="flex justify-end mt-8 gap-x-6 mr-28">
                         <button
                             className="w-28 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
                             type="button"
@@ -295,7 +289,18 @@ export default function ProfilePage() {
                         </button>
                     </div>
                 </form>
+
+                {/* Illustration */}
+                <div className="hidden lg:block absolute bottom-0 right-0 mb-10 mr-10">
+                    <Image
+                        src="/images/profile.png"
+                        alt="Client illustration"
+                        width={400}
+                        height={320}
+                    />
+                </div>
             </div>
         </div>
+
     );
 }

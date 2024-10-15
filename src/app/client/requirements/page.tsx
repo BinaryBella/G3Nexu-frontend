@@ -1,7 +1,7 @@
 "use client";
 
 import React, {useState} from 'react';
-import {Edit, FileSearch, Search, Settings, Trash} from 'lucide-react';
+import {FileSearch, Search} from 'lucide-react';
 import Link from "next/link";
 
 const requirements = [
