@@ -1,7 +1,5 @@
 import axios from 'axios';
-import {
-    Client, Employee, Requirement, Bug, Payment, TermsConditions, ApiResponse
-} from './types';
+import { Client, Employee, Requirement, Bug, Payment, TermsConditions, ApiResponse } from './types';
 
 const BASE_URL = 'https://localhost:7289/api'; // Replace with your API base URL
 
